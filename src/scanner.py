@@ -1,38 +1,48 @@
-import datetime
 import pandas as pd
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
+import lxml
 from selenium.webdriver.support import expected_conditions as EC
 from AHitem import AHitem
 
 
 def get_info(item_id, df):
-    # get source code of web page
-    url = 'https://www.wowuction.com/us/illidan/Items/Stats/'+str(item_id)
+    # get soup
+    base_url = 'https://theunderminejournal.com/#us/illidan/item/'
+    url = base_url+str(item_id)
+    ah_item = AHitem(item_id, df)
+    i = 0
+    # get all attributes of ah_item
+    while True:
+        soup = get_soup(url)
+        if not ah_item.current_price:
+            ah_item.current_price = get_num(soup, '#item-page > div.item-stats > table > tr.current-price > td > span')
+        if not ah_item.median_price:
+            ah_item.median_price = get_num(soup, '#item-page > div.item-stats > table > tr:nth-child(4) > td > span')
+        if not ah_item.mean_price:
+            ah_item.mean_price = get_num(soup, '#item-page > div.item-stats > table > tr:nth-child(5) > td > span')
+        if not ah_item.quantity:
+            ah_item.quantity = get_num(soup, '#item-page > div.item-stats > table > tr:nth-child(1) > td > span')
+        if ah_item.current_price != [] and ah_item.mean_price != [] and ah_item.median_price!=[] and ah_item.quantity!=[]:
+            break
+        if i > 10:
+            break
+        i += 1
+    return ah_item
+
+
+def get_soup(url):
     chrome_options = Options()
     chrome_options.add_argument('--headless')
     browser = webdriver.Chrome(chrome_options=chrome_options)
     browser.get(url)
-    wait = WebDriverWait(browser,2)
-    soup = BeautifulSoup(browser.page_source,'lxml')
+    wait = WebDriverWait(browser, 10)
+    wait.until(EC.presence_of_all_elements_located)
+    soup = BeautifulSoup(browser.page_source, 'lxml')
     browser.close()
-
-    # get all attributes for item
-    ah_item = AHitem(item_id, df)
-    ah_item.min_price = get_price(soup, '#AHMinBuyout > span.cur_g', '#AHMinBuyout > span.cur_s')
-    ah_item.market_price = get_price(soup, '#AHMarketPrice > span.cur_g', '#AHMarketPrice > span.cur_s')
-    # ah_item.average_median_price = get_price(soup,
-    #                                          '#tabs_1 > div > table:nth-child(3) > tbody > tr:nth-child(2) > td:nth-child(2) > span:nth-child(1)',
-    #                                          '#tabs_1 > div > table:nth-child(3) > tbody > tr:nth-child(2) > td:nth-child(2) > span:nth-child(2)')
-    ah_item.current_num = get_num(soup, '#AHCount')
-    ah_item.sold_per_day = get_num(soup, '#tabs_1 > div > table:nth-child(3) > tbody > tr:nth-child(6) > td:nth-child(2)')
-
-    return ah_item
-
-
+    return soup
 
 
 def get_num(soup, sel):
@@ -44,18 +54,8 @@ def get_num(soup, sel):
         except:
             num = tag.string
     else:
-        num = 'NaN'
+        num = temp
     return num
-
-
-def get_price(soup, g_sel, s_sel):
-    g = get_num(soup, g_sel)
-    s = get_num(soup, s_sel)
-    try:
-        price = g+s/100
-    except:
-        price = g
-    return price
 
 
 if __name__=='__main__':
@@ -64,8 +64,3 @@ if __name__=='__main__':
         info = get_info(id, df)
         # info.showall()
         info.show(df)
-
-
-
-
-

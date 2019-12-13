@@ -6,14 +6,13 @@ class AHitem():
             if df['id'][i]==id:
                 self.name = df['name'][i]
                 break
-        self.min_price = 0
-        self.market_price = 0
-        # self.average_median_price = 0
-        self.current_num = 0
-        self.sold_per_day = 0
+        self.current_price = []
+        self.median_price = []
+        self.mean_price = []
+        self.quantity = []
 
     def show(self,df):
-        print(self.name, ': ', end=' ')
+        print(self.name, end=': ')
         for i in range(len(df['id'])):
             if df['id'][i]==self.item_id:
                 index = i
@@ -21,28 +20,23 @@ class AHitem():
         wtb = df['wtb'][index]
         wts = df['wts'][index]
         try:
-            if self.market_price<=wtb*0.8:
-                print('我tm氪爆')
-            elif self.market_price<=wtb:
-                print('看情况买点')
-            elif self.min_price<=wtb:
-                print('有空可以偷鸡')
-            # elif self.market_price<=self.average_median_price*0.8:
-            #     print("低于平均水平")
+            # wtb
+            if self.current_price<=wtb*0.8:
+                print('very cheap')
+            elif self.current_price<=wtb:
+                print('cheap')
 
-            elif self.min_price>=wts*1.2:
-                print('抓紧时间清仓')
-            elif self.min_price>=wts:
-                print('可以考虑回血')
-            elif self.market_price>=wts:
-                print('随便摆摆吧')
-            # elif self.market_price>self.average_median_price*1.2:
-            #     print('高于平均水平')
+            # wts
+            elif self.current_price>=wts*1.2:
+                print('very expensive')
+            elif self.current_price>=wts:
+                print('expensive')
             else:
-                print('今天又是平平无奇的一天')
-            print('min price:', self.min_price, '\tmarket price:', self.market_price, '\tdemand:', self.sold_per_day)
+                print('just another day')
+            print('price:', self.current_price, '\tquantity:', self.quantity,
+                  '\tmedian price:', self.median_price, '\tmean price:', self.mean_price)
         except:
-            print('error loading data from wowuction')
+            print('error collecting data from the website')
             self.showall()
 
 
