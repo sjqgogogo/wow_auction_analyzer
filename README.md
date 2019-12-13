@@ -9,6 +9,7 @@ This project aims to help World of Warcraft players to collect auction data and 
 2, install Google Chrome. 
 
 3, download chromedriver from https://chromedriver.chromium.org/downloads and extract it to get a chromedriver.exe and move it to your Scripts folder for your python interpreter.
+
 For example, for a python interpreter on "C:/python/python.exe", the chromedriver.exe should be on "C:/python/Scripts/chromedriver.exe".
 
 ## How to run
