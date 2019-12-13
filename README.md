@@ -14,7 +14,7 @@ This project aims to help World of Warcraft players to collect auction data and 
 
 For example, for a python interpreter on "C:/python/python.exe", the chromedriver.exe should be on "C:/python/Scripts/chromedriver.exe".
 
-## How to run
+## How to run it
 1, build your own "wish list". Open target.csv file in src folder and add or modify items with item id( the unique identification you can find in WoW), name( as long as you know what it is), wtb( the price at which you want to buy) and wts( the price at which you want to sell). 
 
 You can use https://theunderminejournal.com to determine wtb and wts.
@@ -27,7 +27,7 @@ For example, mine is "https://theunderminejournal.com/#us/illidan" so I need to 
 
 3, just ensure you have a good network environment and get analysis results easily by running scanner.py!
 
-## How to customize
+## How to customize it
 In scanner.py, you can collect more data you want from the website with soup variable in get_info function.
 
 In AHitem.py, you can change the boring word like "very expensive" into interesting ones like "sell now or go die!", change how the analyzer judge the price, and add any rules you want using other collected data like mean price or quantity.
