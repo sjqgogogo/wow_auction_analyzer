@@ -3,6 +3,8 @@
 ## Overview
 This project aims to help World of Warcraft players to collect auction data and do some analysis. Right now this analyzer can get latest price of all items in your "wish list", compare it with your ideal price and tell whether it's a good price or not. With the help of this analyzer, players can save gold on daily flask and potion, earn more gold on their trade oriented skills and save time on their long-term investiment. This analyzer are tested in Windows10 only and may not work for other environments.
 
+![image](https://github.com/sjqgogogo/wow_auction_analyzer/blob/master/result.png)
+
 ## Requirements
 1, install packages including pandas, bs4, selenium and lxml. 
 
