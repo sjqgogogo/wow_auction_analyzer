@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
-import lxml
 from selenium.webdriver.support import expected_conditions as EC
 from AHitem import AHitem
 
@@ -59,7 +58,7 @@ def get_num(soup, sel):
 
 
 if __name__=='__main__':
-    df = pd.read_csv('target.csv')
+    df = pd.read_csv('target.csv', encoding='gbk')
     for id in df['id']:
         info = get_info(id, df)
         # info.showall()
